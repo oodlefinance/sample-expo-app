@@ -1,5 +1,12 @@
-import { StyleSheet, Text } from "react-native";
+import { Text, View } from "react-native";
 
 export default function TabTwoScreen() {
-  return <Text>Hello world!</Text>;
+  return (
+    <View>
+      <Text>Hello world!</Text>
+      <Text>
+        This tab hasn&apos;t really been implemented yet. Sorry about that.
+      </Text>
+    </View>
+  );
 }

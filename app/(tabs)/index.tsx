@@ -6,11 +6,13 @@ import { Image } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import { OMDB_API_KEY } from "@/config/system";
+import { Link } from "expo-router";
 
 type SearchResultMovie = {
+  id: string;
+  posterUri: string;
   title: string;
   year: string;
-  posterUri: string;
 };
 
 export default function HomeScreen() {
@@ -31,9 +33,10 @@ export default function HomeScreen() {
         console.log(json);
 
         return json.Search.map((item: any) => ({
+          id: item.imdbID,
+          posterUri: item.Poster,
           title: item.Title,
           year: item.Year,
-          posterUri: item.Poster,
         }));
       } catch (error) {
         console.log(error);
@@ -64,23 +67,25 @@ export default function HomeScreen() {
           }}
         >
           {data.map((item) => (
-            <View key={`${item.title}-${item.year}`} style={styles.movieCard}>
-              <View style={styles.movieCardHeader}>
-                <Text style={styles.movieCardHeaderTitle}>{item.title}</Text>
-                <Text style={styles.movieCardHeaderYear}>{item.year}</Text>
+            <Link key={`${item.id}`} href={`/movies/${item.id}`}>
+              <View key={`${item.title}-${item.year}`} style={styles.movieCard}>
+                <View style={styles.movieCardHeader}>
+                  <Text style={styles.movieCardHeaderTitle}>{item.title}</Text>
+                  <Text style={styles.movieCardHeaderYear}>{item.year}</Text>
+                </View>
+                <Image
+                  source={{
+                    uri: item.posterUri,
+                  }}
+                  style={{
+                    height: 200,
+                    width: 120,
+                    borderRadius: 5,
+                    marginTop: 5,
+                  }}
+                />
               </View>
-              <Image
-                source={{
-                  uri: item.posterUri,
-                }}
-                style={{
-                  height: 200,
-                  width: 120,
-                  borderRadius: 5,
-                  marginTop: 5,
-                }}
-              />
-            </View>
+            </Link>
           ))}
         </ScrollView>
       )}
